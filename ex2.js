@@ -1,17 +1,17 @@
-function NomeMes(numeroMes) {
+function NomeMes(mes_num) {
      meses = [
         "Janeiro", "Fevereiro", "Março", "Abril",
         "Maio", "Junho", "Julho", "Agosto",
         "Setembro", "Outubro", "Novembro", "Dezembro"
     ];
+     var memes = meses[mes_num - 1];
 
-     nomeMes = meses[numeroMes - 1];
-
-    if (nomeMes) {
-        console.log("O numero " + numeroMes + " corresponde ao mes de " +nomeMes+".");
+    if (memes) {
+        return memes
     } else {
-        console.log("Numero de mes invalido. Por favor forneça um numero de 1 a 12.");
+        return "Numero de mes invalido.";
     }
 }
-
-NomeMes(12)
+mes = 2
+res =  NomeMes(mes)
+console.log("o mes "+ mes + " é "+ res)
