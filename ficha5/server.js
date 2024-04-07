@@ -23,11 +23,11 @@ app.post('/users', (req, res) => {
 app.put('/users/:id', (req, res) => {
   var id = req.params.id;
   var details = req.body;
-  var index = -1; // Initialize index outside the loop
+  var index = -1; 
   for (let i = 0; i < dataobj.data.length; i++) {
     if (id == dataobj.data[i].id) {
       index = i;
-      break; // Exit the loop once user is found
+  
     }
   }
   if (index != -1) {
