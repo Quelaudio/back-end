@@ -35,6 +35,13 @@ app.get('/persons/:id', (req, res) => {
     });
 });
 
+app.get('/persons', (req, res) => {
+    connection.query("select * from ficha7.persons",(err, results,fields)=>{
+        if (err) throw err;
+        res.send(results);
+    });
+});
+
 app.get('/persons/:profession/:age', (req, res) => {
     connection.query("select * from ficha7.persons where Profession=? and Age= ?", [req.params.profession, req.params.age],(err, results,fields)=>{
         if (err) throw err;
@@ -53,8 +60,36 @@ app.delete('/persons', (req, res) => {
 
 
 app.post('/persons', (req, res) => {
-    connection.query("insert into persons(FirstName,lastname,Profession,Age)values(? ? ? ?);"["nuno","Freitas","Dragao",54],(err, results,fields)=>{
+    connection.query("insert into persons(FirstName,lastname,Profession,Age)values(? ,? ,? ,?)",["nuno","Freitas","Dragao",54],(err, results,fields)=>{
         if (err) throw err;
         res.send(results);
+
     });
+    
 });
+
+
+/*pelo body*/
+app.post('/persons', (req, res) => {
+   var details= req.body;
+   var insertquery = "insert into persons(FirstName,lastname,Profession,Age)values(? ,? ,? ,?)"
+   var values = [details.firstname,details.lastname,details.profession,details.age]
+    connection.query(insertquery,values,(err, results,fields)=>{
+        if (err) throw err;
+        res.send("inserted with id: "+ results.insertId);
+
+    });
+    
+});
+
+app.put('/persons/:id', (req,res) =>{
+    var details= req.body;
+    var values = [details.firstname,details.lastname,details.profession,details.age,req.params.id]
+    var insertquery ="UPDATE persons set FirstName=?,lastname=?,Profession=?,Age=? WHERE id = ?;"
+    connection.query(insertquery,values,(err, results,fields)=>{
+        if (err) throw err;
+        res.send(results);
+
+    });
+    
+})
