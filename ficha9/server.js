@@ -74,16 +74,21 @@ sequelize.sync({ force: false})
 
 app.get('/user', (req, res) => {
     User.findAll().then(users =>{
-        res.send( users);
+        if (err) {
+            res.status(500).send("Error getting users");
+        } else {
+            res.status(200).send( users);
+        }
+        
     })
 });
 
 
 app.post('/user', (req, res) => {
-    var details = req.body
-    User.create({ firstName: details.firstName, lastName: details.lastName, age: details.age });
-    res.send("inserted with ID:", res.insertId);
-    
+    var details = req.body;
+    User.create({ firstName: details.firstName, lastName: details.lastName, Profession: details.Profession, age: details.age }).then(newUser => {
+        res.send("Inserted with ID: "+ newUser.id);
+    });
 });
 
 
@@ -91,3 +96,49 @@ app.post('/user', (req, res) => {
 
 
 
+app.delete('/user', (req,res)=> {
+    var details  =req.body;
+    User.destroy({
+        where: {
+            id: details.id
+        }
+    }).then((count) => {
+        if( count == 0){
+            res.send(details.id + " not found")
+
+        }
+        else{
+        res.send("User eliminated with ID: " + details.id)
+        }
+    });
+});
+
+
+app.delete('/user/:id', (req,res)=> {
+    var id = req.params.id
+    User.destroy({
+        where: {
+            id: id
+        }
+    }).then((count) => {
+        if( count == 0){
+            res.send(id + " not found")
+
+        }
+        else{
+        res.send("User eliminated with ID: " + id)
+        }
+    });
+});
+
+app.get('/user/:id', (req, res) => {
+    var id= req.params.id
+    User.findByPk(id).then(users =>{
+        if (err) {
+            res.status(500).send("Error getting user");
+        } else {
+            res.status(200).send(id);
+        }
+        
+    })
+});
