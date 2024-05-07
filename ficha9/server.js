@@ -53,7 +53,7 @@ sequelize.sync({ force: false})
         }).then(function () {
             return User.findAll();
         }).then(function (user){
-            console.log(user)
+            // console.log(user)
         })
         .catch(err => {
             console.log(err);
@@ -131,14 +131,65 @@ app.delete('/user/:id', (req,res)=> {
     });
 });
 
-app.get('/user/:id', (req, res) => {
-    var id= req.params.id
+app.get('/user/id', (req, res) => {
+    var id= req.query.id
     User.findByPk(id).then(users =>{
-        if (err) {
+        if (!users) {
             res.status(500).send("Error getting user");
         } else {
-            res.status(200).send(id);
+            res.status(200).send(users);
         }
         
     })
+});
+
+
+// Selecionar as pessoas pelo sua idade e profissão. Devolver todas as pessoas que reúnam essas
+// condições. Caso não exista, o erro deverá ser tratado de forma adequada.
+
+app.get('/user/:idade/:profissao', (req, res) => {
+    var age= req.params.age;
+    var profission = req.params.Profession
+    User.findAll({      
+        where: {
+            age: age,
+            Profession: profission
+          }
+    }).then(users =>{
+        if (!users) {
+            res.status(500).send("Error getting user");
+        } else {
+            res.status(200).send(users);
+        }
+        
+    })
+});
+
+
+//  Alterar os detalhes de uma pessoa selecionada pelo seu ID. Os novos detalhes deverão ser
+// devolvidos na resposta.
+app.put('/user', (req,res) => {
+var body = req.body;
+    var values = {
+        firstName: body.firstName,
+        lastName: body.lastName,
+        age: body.age,
+        Profession: body.Profession
+    };
+
+    User.update(values, {
+        where: {
+            id: body.id 
+        }
+    }).then(result => {
+        if (result[0] === 0) {
+            res.status(404).send("User not found");
+        } else {
+            res.status(200).send("User with "+  id +"updated successfully");
+        }
+    }).catch(error => {
+        console.error("Error updating user:", error);
+        res.status(500).send("Error updating user");
+    });
+
 });

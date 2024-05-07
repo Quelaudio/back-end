@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
+    "express-generator": "^4.16.1",
     "mysql2": "^3.9.3",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
