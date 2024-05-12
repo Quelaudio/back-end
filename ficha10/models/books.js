@@ -1,7 +1,7 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('Books',{
     book_id: {
-        type: type.STRING,
+        type: type.INTEGER,
         autoIncrement: true,
         primaryKey:true
 
